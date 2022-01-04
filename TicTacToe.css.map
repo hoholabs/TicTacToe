@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,KAAK,CAAA;EACD,gBAAgB,EAAE,SAAS;EAC3B,KAAK,EAAG,KAAK;CAChB",
+    "sources": [
+        "TicTacToe.scss"
+    ],
+    "names": [],
+    "file": "TicTacToe.css"
+}
