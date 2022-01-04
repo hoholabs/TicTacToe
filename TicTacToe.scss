@@ -2,3 +2,16 @@
     background-color: lightgray;
     color:  black;
 }
+
+#gameboard{
+    display:grid;
+    height: 500px;
+    width: 500px;
+    grid-template-columns: 1fr 1fr 1fr;
+    border: 1px solid black;
+
+}
+
+.square{
+    border: black solid 1px;
+}
