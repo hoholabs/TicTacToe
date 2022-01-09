@@ -1,41 +1,188 @@
-//Starting All Over
-
 //gameBoard is a module method, because it is created once
+//the gameBoard exists behind the scenes, it just stores the values
+// and stores the functions to edit those values
 
 const gameBoard = (() => {
 
+    //create the board array
     const board = Array(9);
+    let rounds = 0;
 
+    //set a square's contents
     const setSquare = (i,symbol) => {
+        if(board[i]==""){
         board[i] = symbol;
+        if(checkWin()){
+            return 0;
+        }
+        else{
+            gameController.switchPlayer();
+        }
         return `${i} to ${symbol}`;
+        }
+        else{
+            return "not ok";
+        }
     };
-
+    //return a square's contents
     const getSquare = (i) => {
         return board[i];
     };
-
+    //resets gameboard array to blanks
     const reset = () => {
         for(i=0; i<board.length; i++){
             board[i] = "";
-            //setSquare(i,"");
         };
+        rounds = 0;
+    };
+    //checks for a winner
+    const checkWin = () => {
+        let winner = false;
+
+        let winConditions = [
+            [0,1,2], //across
+            [3,4,5],
+            [6,7,8],
+            [0,3,6], //down
+            [1,4,7],
+            [2,5,8],
+            [0,4,8], //diagonal
+            [2,4,6]
+        ]
+
+        winConditions.forEach(function(array){
+
+            if (board[array[0]] != "" && board[array[0]] === board[array[1]] && board[array[0]] === board[array[2]]){
+                gameController.winState(gameController.getPlayer(),array);
+                winner = true;
+            }
+            
+        });
+        rounds++
+        console.log(rounds);
+        if(rounds == 9 && winner == false){
+            gameController.winState("Nobody",[0,1,2,3,4,5,6,7,8]);
+            winner = true;
+        }
+        return winner;
 
     };
 
-    return{setSquare, getSquare, reset}
+    return{setSquare, getSquare, reset, checkWin, board, rounds }
 
 })();
 
-gameBoard.reset();
-
 //Gameplay object, because the instructions said so. IDK what it is yet
+const gameController = (() =>{
 
-const gameController = "";
+    let player = true;
 
-//displayController is a module I guess? For the messages/round/wins etc.
+    //set player's turn
+    const switchPlayer = () =>{
+        player = !player;
+        displayController.setMessage(`${gameController.getPlayer()}'s turn`);
+        return player;
+    };
 
-const displayController = "";
+    //get current player true = X false = O
+    const getPlayer = () => {
+        return player ?  player1.getName() :  player2.getName();
+    }
+    //get current player's symbol
+    const getSymbol = () => {
+        return player ? player1.getSymbol() : player2.getSymbol();
+    }
+
+    //call this when a round ends
+    const winState = (winner,squares) => {
+        displayController.setMessage(`${winner} wins!`);
+        displayController.colorSquares(squares);
+        displayController.unclickable();
+        
+        return winner;
+    }
+
+    //restarts, maybe increment round
+
+    return{switchPlayer, getPlayer, getSymbol, winState} //gameController
+
+})();
+
+//displayController is a module to control what is displayed
+const displayController = (() => {
+
+    const round = document.getElementById("round");
+    const message = document.getElementById("message");
+    const displayP1 = document.getElementById("p1-name");
+    const displayP2 = document.getElementById("p2-name");
+
+    const restartButton = document.getElementById("restart-button")
+    restartButton.textContent = "rematch?";
+
+    restartButton.addEventListener('click', () => {
+        gameBoard.reset();
+        displayController.reset();
+        restartButton.style.display = "none";
+    });
+
+    //get all squares, and add click event to them
+    const squares = document.querySelectorAll('.square');
+
+    function clicker (element){
+            gameBoard.setSquare(element.target.dataset.index,gameController.getSymbol())
+            displayController.Update();
+            console.log("clicker");
+        }
+
+    const clickable = (element) => {
+        squares.forEach((element) =>
+            element.addEventListener("click", clicker)
+        );
+    }
+
+    const unclickable = () => {
+        squares.forEach((element) =>
+            element.removeEventListener("click", clicker)
+        );
+        console.log("unclickable");
+    }
+
+    const setName = () => {
+        displayP1.textContent = player1.getName();
+        displayP2.textContent = player2.getName();  
+
+    };
+
+    const setMessage = (input) => {
+        message.textContent = input;
+    }
+
+    const Update = () => {
+        //update square contents
+        for(i=0;i<squares.length;i++){
+            squares[i].textContent = gameBoard.getSquare(i);
+        }
+    }
+
+    const colorSquares = (array) => {
+        //color the squares from winstate
+        array.forEach(element => squares[element].style.backgroundColor = "lightgreen");
+        restartButton.style.display = "inline";
+        displayController.unclickable();
+    }
+    
+    const reset = () =>{
+        for(i=0;i<squares.length;i++){
+            squares[i].style.backgroundColor = "burlywood";
+        }
+        gameController.switchPlayer();
+        clickable();
+        Update();
+    }
+
+    return {setName, Update, setMessage, colorSquares, reset, clickable, unclickable, squares, message, round, displayP1, displayP2}; //displayController
+
+})();
 
 //Players is a factory function because it gets reused
 
@@ -54,157 +201,28 @@ const playerFactory = (name, symbol) => {
     return {getSymbol,getName};
 }
 
-//creates 2 players
-const player1 = playerFactory("johnny","X");
-const player2 = playerFactory("cherry","O");
+//starts game
 
-//Check win
+displayButton = document.getElementById("display-button");
+displayButton.textContent = "GO!";
 
+nameInput = document.querySelectorAll(".name-input");
 
+let player1 = playerFactory("Player 1","X");
+let player2 = playerFactory("Player 2","O");
 
+displayButton.addEventListener("click",() => {
+    displayController.clickable();
+    displayButton.style.display = "none";
+    player1 = playerFactory(nameInput[0].value,"X");
+    player2 = playerFactory(nameInput[1].value,"O");
+    displayController.setMessage(`${gameController.getPlayer()}'s turn`);
+    nameInput[0].style.display = "none";
+    nameInput[1].style.display = "none";
+    displayController.setName();
+    gameBoard.reset();
+})
 
-
-
-
-
-
-
-
-
-
-
-
-//OLD CODE VVV
-
-// // Set up your project with a HTML, CSS and Javascript files and get the 
-// //Git repo all set up.
-// //DONE
-
-// // You’re going to store the gameboard as an array inside of a Gameboard object, 
-// //so start there! 
-// //I should do this as a module pattern
-
-// const gameboard = {board:[ " ", " ", " ", " ", " ", " ", " ", " ", " "]}
-
-// const gameBoard2 = (() => {
-//     const board = ["", "", "", "", "", "", "", "", ""];
-
-//     const setField = (index, sign) => {
-//         if (index > board.length) return;
-//         board[index] = sign;
-//         console.log("K");
-//         updateGameboard();
-//       };
-//     return {setField};
-
-// })();
-  
-
-// let squares = document.getElementsByClassName("square");
-
-// //add click event listener to each square which 
-// //changes the board array entry to X and updated the gameboard
-// //DONE
-
-// for(let i = 0; i < squares.length; i++){
-
-//     squares[i].addEventListener("click", function() {
-
-//         if(gameboard.board[i]==" "){
-//         //gameboard.board[i] = currentPlayer.Symbol;
-//         gameBoard2.setField(i, currentPlayer.Symbol);
-//         updateGameboard();
-//         //checkWinner();
-//         switchPlayer();
-//         }
-//         });
-
-// }
-
-// function updateGameboard(){
-
-//     for(let i=0 ; i<gameboard.board.length ; i++) {
-//         //let squares = document.getElementsByClassName("square");
-//         //console.log(squares);
-//         //console.log(squares[0]);
-//         //console.log(i);
-//         //console.log(squares[i]);
-//         squares[i].textContent = gameboard.board[i];
-//         //console.log(squares[i].textContent);
-
-//         //put check here to see if someone won
-
-//     }
-//     return "updated";
-// }
-
-// updateGameboard();
-
-
-// // Your players are also going to be stored in objects… and you’re 
-// // probably going to want an object 
-// // to control the flow of the game itself.
-
-// // Your main goal here is to have as little global code as possible. 
-// // Try tucking everything away inside of a module or factory. 
-
-// // Rule of thumb: if you only ever need ONE of something 
-// // (gameBoard, displayController), use a module. 
-
-
-// // If you need multiples of something (players!), create them with factories.
-
-// const Player = (playerName, Symbol) => {
-
-//     return {playerName, Symbol};
-
-// }
-
-// const playerOne = Player("Player1","X");
-// const playerTwo = Player("Player2","O");
-
-// let currentPlayer = playerOne;
-
-// function switchPlayer(){
-//     if(currentPlayer == playerOne){
-//         currentPlayer = playerTwo;
-//         console.log(`from 1 to 2`)
-//     }
-//     else{currentPlayer == playerTwo
-//         currentPlayer = playerOne;
-//         console.log(`from 2 to 1`)
-//     }
-//     console.log(currentPlayer);
-// }
-
-// // Set up your HTML and write a JavaScript function that will render the contents of the 
-// // gameboard array to the webpage (for now you can just manually fill 
-// // in the array with "X"s and "O"s)
-// //DONE
-
-// // Build the functions that allow players to add marks to a specific spot on the board, 
-// // and then tie 
-// // it to the DOM, letting players click on the gameboard to place their marker. 
-// //DONE
-
-// // Don’t forget the logic that keeps players from playing in spots that are already taken!
-// //DONE
-
-// // Think carefully about where each bit of logic should reside. 
-// // Each little piece of functionality should be able to fit in the game, 
-// // player or gameboard objects.. 
-// // but take care to put them in “logical” places. 
-// // Spending a little time brainstorming here can make your life much easier later!
-// // !!!!! NOT DONE IDK what logic I"m supposed to be using here... doing everything
-// //without modules or factory functions for now I guess??
-
-
-// // Build the logic that checks for when the game is over! Should check for 
-// // 3-in-a-row and a tie.
-
-// // Clean up the interface to allow players to put in their names, 
-// // include a button to start/restart 
-// // the game and add a display element that congratulates the winning player!
 
 // // Optional - If you’re feeling ambitious create an AI so that a player can 
 // // play against the computer!

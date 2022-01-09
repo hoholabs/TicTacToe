@@ -3,18 +3,111 @@
     color:  black;
 }
 
-#gameboard{
+#display-panel{
+    display: grid;
+    height: 50px;
+    width: 498px;
+    border: solid darkslategrey 2px;
+    border-bottom: solid 0px;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: rgba(222, 184, 135, 0.5);
+    //grid-template-rows: 1fr 1fr;
+
+    #display-p1{
+        display:grid;
+        justify-content: center;
+        //background-color:white;
+        border-right: solid 1px darkslategrey;
+        grid-row-start: 1;
+        grid-column-start: 1;
+
+    }
+
+    #display-game{
+        display:grid;
+        justify-content:center;
+        grid-row-start:1;
+        grid-column-start:2;
+        grid-template-rows: 1fr 1fr;
+        border-left: solid 1px darkslategrey;
+        border-right: solid 1px darkslategrey;
+        //display:none;
+        #round{
+            justify-self: center;
+            align-self: center;
+            grid-row-start:1;
+        }
+        #message{
+            justify-self: center;
+            align-self: center;
+            grid-row-start:1;
+            grid-column-start:1;
+        }
+       //background-color: green;
+    }
+    #display-p2{
+        display: grid;
+        justify-content: center;
+        //background-color: blue;
+        border-left:solid darkslategrey 1px;
+        //grid-row-start:1;
+        //grid-column-start:3;
+        //display:none;
+    }
+    #display-button{
+        grid-row-start:1;
+        grid-row-end:3;
+        width:50px;
+        background-color: lightgreen;
+        border:none;
+        //height:50px;
+        //display:none;
+    }
+    #restart-button{
+        grid-row-start:2;
+        //grid-row-end:3;
+        //width:50px;
+        //height:50px;
+        display:none;
+    }
+    .name-input{
+        width:95%;
+        //height:20px;
+        //display:none;
+        grid-row-start:1;
+        grid-row-end: 2;
+        text-align: center;
+        //border: solid red 2px;
+    }
+    .player-name{
+        justify-self: center;
+        align-self: center;
+        grid-row-start:1;
+        //display:none;
+    }
+    .player-symbol{
+        justify-self: center;
+        align-self: center;
+        grid-row-start:2;
+        //grid-row-end:3;
+        //display: none;
+    }
+    
+}
+
+#game-board{
     display:grid;
     height: 500px;
     width: 500px;
     grid-template-columns: 1fr 1fr 1fr;
-    border: 1px solid black;
+    border: 1px solid darkslategrey;
 
 }
 
 .square{
-    border: black solid 1px;
+    border: darkslategrey solid 1px;
     text-align: center;
+    background-color: burlywood;
     //display:flex;
 
 }

@@ -3,18 +3,134 @@
   color: black;
 }
 
-#gameboard {
+#display-panel {
+  display: -ms-grid;
+  display: grid;
+  height: 50px;
+  width: 498px;
+  border: solid darkslategrey 2px;
+  border-bottom: solid 0px;
+  -ms-grid-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+  background-color: rgba(222, 184, 135, 0.5);
+}
+
+#display-panel #display-p1 {
+  display: -ms-grid;
+  display: grid;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-right: solid 1px darkslategrey;
+  -ms-grid-row: 1;
+      grid-row-start: 1;
+  -ms-grid-column: 1;
+      grid-column-start: 1;
+}
+
+#display-panel #display-game {
+  display: -ms-grid;
+  display: grid;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-grid-row: 1;
+      grid-row-start: 1;
+  -ms-grid-column: 2;
+      grid-column-start: 2;
+  -ms-grid-rows: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+  border-left: solid 1px darkslategrey;
+  border-right: solid 1px darkslategrey;
+}
+
+#display-panel #display-game #round {
+  -ms-grid-column-align: center;
+      justify-self: center;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  -ms-grid-row: 1;
+      grid-row-start: 1;
+}
+
+#display-panel #display-game #message {
+  -ms-grid-column-align: center;
+      justify-self: center;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  -ms-grid-row: 1;
+      grid-row-start: 1;
+  -ms-grid-column: 1;
+      grid-column-start: 1;
+}
+
+#display-panel #display-p2 {
+  display: -ms-grid;
+  display: grid;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  border-left: solid darkslategrey 1px;
+}
+
+#display-panel #display-button {
+  -ms-grid-row: 1;
+      grid-row-start: 1;
+  grid-row-end: 3;
+  width: 50px;
+  background-color: lightgreen;
+  border: none;
+}
+
+#display-panel #restart-button {
+  -ms-grid-row: 2;
+      grid-row-start: 2;
+  display: none;
+}
+
+#display-panel .name-input {
+  width: 95%;
+  -ms-grid-row: 1;
+      grid-row-start: 1;
+  grid-row-end: 2;
+  text-align: center;
+}
+
+#display-panel .player-name {
+  -ms-grid-column-align: center;
+      justify-self: center;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  -ms-grid-row: 1;
+      grid-row-start: 1;
+}
+
+#display-panel .player-symbol {
+  -ms-grid-column-align: center;
+      justify-self: center;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  -ms-grid-row: 2;
+      grid-row-start: 2;
+}
+
+#game-board {
   display: -ms-grid;
   display: grid;
   height: 500px;
   width: 500px;
   -ms-grid-columns: 1fr 1fr 1fr;
       grid-template-columns: 1fr 1fr 1fr;
-  border: 1px solid black;
+  border: 1px solid darkslategrey;
 }
 
 .square {
-  border: black solid 1px;
+  border: darkslategrey solid 1px;
   text-align: center;
+  background-color: burlywood;
 }
 /*# sourceMappingURL=TicTacToe.css.map */

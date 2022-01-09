@@ -8,17 +8,39 @@
     <title>Tic Tac Toe</title>
 </head>
 <body>
+    <div id= "display-panel">
+        <div id= "display-p1">
+            <input type="text" class = "name-input" id="name-p1" name="name-p1" placeholder="player 1">
+            <!-- <input type="submit"  value="OK"> -->
+            <div class = "player-name" id = "p1-name"></div>
+            <div class = "player-symbol"> X </div>
+        </div>
 
-    <div id = "gameboard">
-        <div class = "square"></div>
-        <div class = "square"></div>
-        <div class = "square"></div>
-        <div class = "square"></div>
-        <div class = "square"></div>
-        <div class = "square"></div>
-        <div class = "square"></div>
-        <div class = "square"></div>
-        <div class = "square"></div>
+        <div id = "display-game">
+            <div id= "round"></div>
+            <div id = "message"></div>
+            <button id="display-button">
+            <button id="restart-button"></button>
+
+        </div>
+
+        <div id = "display-p2">
+            <input type="text" class = "name-input" id="name-p2" name="name-p2" placeholder = "player 2">
+            <!-- <input type="submit" value="OK"> -->
+            <div class = "player-name" id = "p2-name"></div>
+            <div class = "player-symbol"> O </div>
+        </div>
+    </div>
+    <div id = "game-board">
+        <div class = "square" data-index = 0></div>
+        <div class = "square" data-index = 1></div>
+        <div class = "square" data-index = 2></div>
+        <div class = "square" data-index = 3></div>
+        <div class = "square" data-index = 4></div>
+        <div class = "square" data-index = 5></div>
+        <div class = "square" data-index = 6></div>
+        <div class = "square" data-index = 7></div>
+        <div class = "square" data-index = 8></div>
     </div>
     <script src = "TicTacToe.js"></script>
 </body>
