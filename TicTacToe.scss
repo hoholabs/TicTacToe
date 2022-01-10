@@ -1,23 +1,33 @@
 :root{
     background-color: lightgray;
-    color:  black;
+    color:  rgb(65, 65, 65);
+    font-size : MIN(3vh, 3vw);
+    font-family: 'Montserrat', sans-serif;
+    --bgcolor1: rgb(222, 192, 135);
+    --bgcolor2: rgb(219, 208, 192);
+    --bordercolor: rgb(90, 77, 18);
+    --mylightgreen: rgb(155, 218, 97);
 }
 
 #display-panel{
     display: grid;
-    height: 50px;
-    width: 498px;
-    border: solid darkslategrey 2px;
+    height: MIN(9vh, 9vw);
+    width: MIN(81vh, 81vw);
+    border: solid var(--bordercolor) MIN(.1vh, .1vw);
     border-bottom: solid 0px;
     grid-template-columns: 1fr 1fr 1fr;
-    background-color: rgba(222, 184, 135, 0.5);
+    background-color: var(--bgcolor1);
+    margin: auto;
+    margin-top: MIN(5vh, 5vw);
+    
     //grid-template-rows: 1fr 1fr;
 
     #display-p1{
         display:grid;
         justify-content: center;
         //background-color:white;
-        border-right: solid 1px darkslategrey;
+        border: solid MIN(.1vh, .1vw) var(--bordercolor);
+        border-bottom: solid 0px;
         grid-row-start: 1;
         grid-column-start: 1;
 
@@ -29,8 +39,8 @@
         grid-row-start:1;
         grid-column-start:2;
         grid-template-rows: 1fr 1fr;
-        border-left: solid 1px darkslategrey;
-        border-right: solid 1px darkslategrey;
+        border: solid MIN(.1vh, .1vw) var(--bordercolor);
+        border-bottom: solid 0;
         //display:none;
         #round{
             justify-self: center;
@@ -49,17 +59,22 @@
         display: grid;
         justify-content: center;
         //background-color: blue;
-        border-left:solid darkslategrey 1px;
+        border:solid var(--bordercolor) MIN(.1vh, .1vw);
+        border-bottom: solid 0;
         //grid-row-start:1;
         //grid-column-start:3;
         //display:none;
     }
-    #display-button{
+    #start-button{
         grid-row-start:1;
         grid-row-end:3;
-        width:50px;
-        background-color: lightgreen;
+        height: MIN(7vh, 7vw);
+        width: MIN(7vh, 7vw);
+        background-color: var(--mylightgreen);
         border:none;
+        align-self: center;
+        border: rgb(100, 158, 73) solid 1px;
+        border-radius: MIN(2vh,2vw);
         //height:50px;
         //display:none;
     }
@@ -71,12 +86,18 @@
         display:none;
     }
     .name-input{
-        width:95%;
+        width:90%;
         //height:20px;
         //display:none;
         grid-row-start:1;
         grid-row-end: 2;
         text-align: center;
+        background-color:lightgray;
+        border:none;
+        border-radius: 10px;
+        padding: 3px;
+        margin: auto;
+        margin-top: 1%;
         //border: solid red 2px;
     }
     .player-name{
@@ -97,17 +118,79 @@
 
 #game-board{
     display:grid;
-    height: 500px;
-    width: 500px;
+    height: MIN(81vh, 81vw);
+    width: MIN(81vh, 81vw);
     grid-template-columns: 1fr 1fr 1fr;
-    border: 1px solid darkslategrey;
+    grid-template-rows: 1fr 1fr 1fr;
+    border: 1px solid var(--bordercolor);
+    margin: auto;
 
 }
 
 .square{
-    border: darkslategrey solid 1px;
+    border: var(--bordercolor) solid MIN(.1vh, .1vw);
     text-align: center;
-    background-color: burlywood;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    padding: auto;
+    background-color: var(--bgcolor2);
+    font-size: 10vw;
     //display:flex;
 
+}
+
+#win-display{
+    z-index: -1;
+    //border: solid red 2px;
+    box-shadow:0 0 0 0.1rem #666;
+    position: absolute;
+    width: MIN(81vw, 81vh);
+    height: MIN(81vw, 81vh);
+    margin: 0px 0px 0px 0px ;
+    padding: 0;
+    top: 0; right: 0; bottom: 0; left: 0;
+    // margin-top: MIN(18vh, 18vw);
+    margin-left: auto;
+    margin-right:auto;
+    margin-top: MIN(14.2vh, 14.2vw);
+    display: grid;
+    grid-template-columns: repeat(27, 1fr);
+    grid-template-rows: repeat(27, 1fr);
+
+    #win0{
+        grid-area: 5/3/6/26; //row-start col-start row-end col-end 
+    }
+    #win1{
+        grid-area: 14/3/15/26; //row-start col-start row-end col-end 
+    }
+    #win2{
+        grid-area: 23/3/24/26; //row-start col-start row-end col-end 
+    }
+    #win3{
+        grid-area: 3/5/26/6; //row-start col-start row-end col-end //good
+    }
+    #win4{
+        grid-area: 3/14/26/15; //row-start col-start row-end col-end 
+    }
+    #win5{
+        grid-area: 3/23/26/24; //row-start col-start row-end col-end 
+    }
+    #win6{
+        grid-area: 14/1/15/28; //row-start col-start row-end col-end 
+        transform: rotate(45deg);
+    }
+    #win7{
+        grid-area: 14/1/15/28; //row-start col-start row-end col-end 
+        transform: rotate(135deg);
+    }
+    
+}
+
+.win-line{
+    //border: solid rgb(87, 87, 87) 2px;
+    box-shadow: 0px 0px MIN(2vh, 2vw) -1px rgb(87, 87, 87);
+    background-color: rgba(87, 87, 87, 0.87);;
+    border-radius: MIN(2vh, 2vw);
+    display: none;
 }

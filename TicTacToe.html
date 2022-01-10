@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap');
+        </style>
     <link rel = "stylesheet" href="TicTacToe.css">
     <title>Tic Tac Toe</title>
 </head>
@@ -19,7 +22,7 @@
         <div id = "display-game">
             <div id= "round"></div>
             <div id = "message"></div>
-            <button id="display-button">
+            <button id="start-button">
             <button id="restart-button"></button>
 
         </div>
@@ -30,6 +33,17 @@
             <div class = "player-name" id = "p2-name"></div>
             <div class = "player-symbol"> O </div>
         </div>
+    </div>
+    <div id = "win-display">
+        <div id="win0" class = "win-line"></div>
+        <div id="win1" class = "win-line"></div>
+        <div id="win2" class = "win-line"></div>
+        <div id="win3" class = "win-line"></div>
+        <div id="win4" class = "win-line"></div>
+        <div id="win5" class = "win-line"></div>
+        <div id="win6" class = "win-line"></div>
+        <div id="win7" class = "win-line"></div>
+        
     </div>
     <div id = "game-board">
         <div class = "square" data-index = 0></div>
@@ -42,6 +56,7 @@
         <div class = "square" data-index = 7></div>
         <div class = "square" data-index = 8></div>
     </div>
+    
     <script src = "TicTacToe.js"></script>
 </body>
 </html>

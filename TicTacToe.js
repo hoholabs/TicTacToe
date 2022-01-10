@@ -53,13 +53,13 @@ const gameBoard = (() => {
         winConditions.forEach(function(array){
 
             if (board[array[0]] != "" && board[array[0]] === board[array[1]] && board[array[0]] === board[array[2]]){
-                gameController.winState(gameController.getPlayer(),array);
+                let winIndex = winConditions.indexOf(array);//checks which win condition happened
+                gameController.winState(gameController.getPlayer(),array,winIndex); //send win info to gameController
                 winner = true;
             }
             
         });
         rounds++
-        console.log(rounds);
         if(rounds == 9 && winner == false){
             gameController.winState("Nobody",[0,1,2,3,4,5,6,7,8]);
             winner = true;
@@ -94,10 +94,11 @@ const gameController = (() =>{
     }
 
     //call this when a round ends
-    const winState = (winner,squares) => {
+    const winState = (winner,squares,winIndex) => {
         displayController.setMessage(`${winner} wins!`);
         displayController.colorSquares(squares);
         displayController.unclickable();
+        displayController.winLine(winIndex);
         
         return winner;
     }
@@ -116,8 +117,10 @@ const displayController = (() => {
     const displayP1 = document.getElementById("p1-name");
     const displayP2 = document.getElementById("p2-name");
 
+    let winDisplay = document.getElementById("win-display");
+
     const restartButton = document.getElementById("restart-button")
-    restartButton.textContent = "rematch?";
+    restartButton.textContent = "rematch";
 
     restartButton.addEventListener('click', () => {
         gameBoard.reset();
@@ -131,7 +134,6 @@ const displayController = (() => {
     function clicker (element){
             gameBoard.setSquare(element.target.dataset.index,gameController.getSymbol())
             displayController.Update();
-            console.log("clicker");
         }
 
     const clickable = (element) => {
@@ -144,12 +146,19 @@ const displayController = (() => {
         squares.forEach((element) =>
             element.removeEventListener("click", clicker)
         );
-        console.log("unclickable");
     }
 
     const setName = () => {
-        displayP1.textContent = player1.getName();
-        displayP2.textContent = player2.getName();  
+        if(player1.getName() == "X"){
+            //display.P1.style.display = "none";
+            return;
+        }
+        else{displayP1.textContent = player1.getName();}
+
+        if(player2.getName() == "O"){
+            return;
+        }
+        else{displayP2.textContent = player2.getName();  }
 
     };
 
@@ -166,21 +175,35 @@ const displayController = (() => {
 
     const colorSquares = (array) => {
         //color the squares from winstate
-        array.forEach(element => squares[element].style.backgroundColor = "lightgreen");
+        array.forEach(element => squares[element].style.backgroundColor = "var(--mylightgreen)");
         restartButton.style.display = "inline";
         displayController.unclickable();
     }
     
     const reset = () =>{
+        //reset square colors
         for(i=0;i<squares.length;i++){
-            squares[i].style.backgroundColor = "burlywood";
+            squares[i].style.backgroundColor = "var(--bgcolor2)";
         }
+        //move win display back, erase win line. 
+        winDisplay.style.zIndex = "-1";
+        let winLines = document.querySelectorAll(".win-line");
+        winLines.forEach((element) => {element.style.display = "none"} );
+
+        //switch players, make squares clickable, update display of gameboard array
         gameController.switchPlayer();
         clickable();
         Update();
     }
 
-    return {setName, Update, setMessage, colorSquares, reset, clickable, unclickable, squares, message, round, displayP1, displayP2}; //displayController
+    const winLine = (winIndex) => {
+        winDisplay.style.zIndex = "1";
+        let winLine = document.getElementById(`win${winIndex}`);
+        winLine.style.display = "inline";
+
+    }
+
+    return {setName, Update, setMessage, colorSquares, reset, clickable, unclickable, winLine};//, squares, message, round, displayP1, displayP2}; //displayController
 
 })();
 
@@ -203,17 +226,24 @@ const playerFactory = (name, symbol) => {
 
 //starts game
 
-displayButton = document.getElementById("display-button");
-displayButton.textContent = "GO!";
+startButton = document.getElementById("start-button");
+startButton.textContent = "GO!";
 
 nameInput = document.querySelectorAll(".name-input");
-
+nameInput[0].value="";
+nameInput[1].value="";
 let player1 = playerFactory("Player 1","X");
 let player2 = playerFactory("Player 2","O");
 
-displayButton.addEventListener("click",() => {
+startButton.addEventListener("click",() => {
     displayController.clickable();
-    displayButton.style.display = "none";
+    startButton.style.display = "none";
+    if(nameInput[0].value==""){
+        nameInput[0].value = "X";
+    }
+    if(nameInput[1].value==""){
+        nameInput[1].value = "O";
+    }
     player1 = playerFactory(nameInput[0].value,"X");
     player2 = playerFactory(nameInput[1].value,"O");
     displayController.setMessage(`${gameController.getPlayer()}'s turn`);
